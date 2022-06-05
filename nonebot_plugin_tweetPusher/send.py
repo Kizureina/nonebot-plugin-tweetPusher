@@ -6,7 +6,7 @@ import os
 from nonebot import require, get_bot
 scheduler = require('nonebot_plugin_apscheduler').scheduler
 
-@scheduler.scheduled_job('interval', minutes = 1, id = 'twisender')
+@scheduler.scheduled_job('interval', minutes = 5, id = 'twisender')
 async def twi_sender():
     bot = get_bot()
     driver = nonebot.get_driver()
@@ -14,7 +14,7 @@ async def twi_sender():
     pusher_users = driver.config.pusher_user
     print("start")
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    db_path = os.path.join(BASE_DIR, "twitest.db")
+    db_path = os.path.join(BASE_DIR, "twi.db")
     con = sqlite3.connect(db_path)
     cur = con.cursor()
     cur.execute("select * from tweet")

@@ -7,13 +7,13 @@ import nonebot
 from nonebot import require
 scheduler = require('nonebot_plugin_apscheduler').scheduler
 
-@scheduler.scheduled_job('interval', minutes = 1, id = 'twi_checker')
+@scheduler.scheduled_job('interval', minutes = 3, id = 'twi_checker')
 
 def tweet_check():
     driver = nonebot.get_driver()
     twi_users = getattr(driver.config, "twi_user", list)
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    db_path = os.path.join(BASE_DIR, "twitest.db")
+    db_path = os.path.join(BASE_DIR, "twi.db")
     now_users = 0
     for i in twi_users:    
         now_users = now_users + 1
@@ -33,13 +33,7 @@ def tweet_check():
         cur = con.cursor()
         cur.execute('select * from tweet')
         users = cur.fetchall()
-        last_users = len(users)
 
-        if now_users > last_users:
-            # 更新
-            for i in range(last_users, now_users):
-                cur.execute('INSERT INTO tweet VALUES(?,?,?,?)', (i, twi_users[i], 0, 1111111111111))
-                con.commit()
         for i in range(len(users)):
             uname = users[i][1]
             tid = users[i][3]
